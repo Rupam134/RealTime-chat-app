@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Chatty</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="card">
+
+  
+    <div class="icon-rail">
+      <div class="rail-avatar">👤</div>
+      <div class="rail-icon">🏠</div>
+      <div class="rail-icon active">💬</div>
+      <div class="rail-icon">👥</div>
+      <div class="rail-icon">📅</div>
+      <div class="rail-icon">⚙</div>
+
+    </div>
+
+    
+
+    <div class="conversations">
+      <h1>Conversations</h1>
+
+      <div class="tabs">
+        <span class="tab active">• Latest</span>
+        <span class="tab">Unread</span>
+        <span class="tab">Favorites</span>
+        <span class="tab">Archived</span>
+      </div>
+
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" placeholder="Search conversations">
+      </div>
+
+      <ul class="convo-list">
+
+        <li class="convo active">
+          <div class="avatar">🧔</div>
+          <div class="convo-info">
+            <p class="convo-top">
+              <span class="convo-name">Rajesh</span>
+              <span class="convo-time">2 minutes ago</span>
+            </p>
+            <p class="convo-bottom">
+              <span class="convo-msg">what's up?</span>
+              <span class="tick">✓</span>
+            </p>
+          </div>
+        </li>
+
+        <li class="convo">
+          <div class="avatar">👩</div>
+          <div class="convo-info">
+            <p class="convo-top">
+              <span class="convo-name">Ramesh</span>
+              <span class="convo-time">8 minutes ago</span>
+            </p>
+            <p class="convo-bottom">
+              <span class="convo-msg">koii na, chal!😄</span>
+              <span class="badge">3</span>
+            </p>
+          </div>
+        </li>
+
+        <li class="convo">
+          <div class="avatar">🧑</div>
+          <div class="convo-info">
+            <p class="convo-top">
+              <span class="convo-name">Purnajit</span>
+              <span class="convo-time">15 minutes ago</span>
+            </p>
+            <p class="convo-bottom">
+              <span class="convo-msg">You: How about tomorrow?</span>
+              <span class="tick">✓</span>
+            </p>
+          </div>
+        </li>
+
+        <li class="convo">
+          <div class="avatar">👩‍🦰</div>
+          <div class="convo-info">
+            <p class="convo-top">
+              <span class="convo-name">Ananya</span>
+              <span class="convo-time">Yesterday</span>
+            </p>
+            <p class="convo-bottom">
+              <span class="convo-msg">kl baat krte h!</span>
+              <span class="badge">1</span>
+            </p>
+          </div>
+        </li>
+
+        <li class="convo">
+          <div class="avatar">👩‍🦱</div>
+          <div class="convo-info">
+            <p class="convo-top">
+              <span class="convo-name">Robin</span>
+              <span class="convo-time">Wednesday</span>
+            </p>
+            <p class="convo-bottom">
+              <span class="convo-msg">You: Talk to you soon! 😊</span>
+              <span class="tick">✓</span>
+            </p>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+   
+
+    <div class="chat-window">
+
+      <div class="chat-header">
+        <div class="avatar">
+          🧔
+          <span class="online-dot"></span>
+        </div>
+        <div class="header-info">
+          <p class="header-status">Online</p>
+          <p class="header-name">Rajesh</p>
+        </div>
+        <div class="header-icons">
+          <span>📞</span>
+          <span>👤➕</span>
+          <span>⋮</span>
+        </div>
+      </div>
+
+      
+
+      <div class="messages">
+
+        <div class="msg-row received">
+          <div class="avatar small">🧔</div>
+          <div class="msg-col">
+            <span class="msg-sender">Rajesh</span>
+            <div class="bubble received">Kesa h?</div>
+            <span class="msg-time">09:15 am</span>
+          </div>
+        </div>
+
+        <div class="msg-row sent">
+          <div class="msg-col">
+            <div class="bubble sent">Badiya bhai..</div>
+          </div>
+        </div>
+
+        <div class="msg-row sent">
+          <div class="msg-col">
+            <div class="bubble sent">
+              <p>Tu bata </span></p>
+
+            </div>
+            <span class="msg-time right">7 minutes ago</span>
+          </div>
+        </div>
+
+        <div class="msg-row received">
+          <div class="avatar small">🧔</div>
+          <div class="msg-col">
+            <span class="msg-sender">Rajesh</span>
+            <div class="bubble received">Badiya badiya..</div>
+            <span class="msg-time">2 minutes ago</span>
+          </div>
+        </div>
+
+        <div class="msg-row sent ">
+          <div class="msg-col">
+            <span class="msg-sender right"></span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="message-input">
+        <span class="icon">😊</span>
+        <input type="text" placeholder="Write your message here...">
+        <span class="icon">📎</span>
+        <button class="send-btn">➤</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
