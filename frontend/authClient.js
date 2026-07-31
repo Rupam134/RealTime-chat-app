@@ -1,3 +1,8 @@
+// ---------------------------------------------------
+// Register/login now go straight to Supabase Auth from the
+// browser — no custom backend routes needed for this part.
+// Supabase handles password hashing, sessions, everything.
+// ---------------------------------------------------
 
 const registerForm = document.getElementById("registerForm");
 const loginForm = document.getElementById("loginForm");
@@ -7,30 +12,19 @@ if (registerForm) {
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
 
-    if (password !== confirmPassword) {
-      messageBox.textContent = "Passwords do not match";
-      return;
-    }
+    const { error } = await supabaseClient.auth.signUp({ email, password });
 
-    const res = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await res.json();
-
-    if (!res.ok) {
-      messageBox.textContent = data.error;
+    if (error) {
+      messageBox.textContent = error.message;
       return;
     }
 
     messageBox.style.color = "#d6ffd6";
     messageBox.textContent = "Account created! Redirecting to login...";
-    setTimeout(() => (window.location.href = "login.html"), 1000);
+    setTimeout(() => (window.location.href = "login.html"), 1200);
   });
 }
 
@@ -38,18 +32,13 @@ if (loginForm) {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value;
 
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await res.json();
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
-    if (!res.ok) {
-      messageBox.textContent = data.error;
+    if (error) {
+      messageBox.textContent = error.message;
       return;
     }
 
