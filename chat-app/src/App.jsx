@@ -12,6 +12,7 @@ export default function App() {
   const [activeContact, setActiveContact] = useState(null);
   const [currentName, setCurrentName] = useState("");
 
+  
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);

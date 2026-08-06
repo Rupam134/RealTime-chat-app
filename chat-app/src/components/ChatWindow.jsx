@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../supabase";
 import Message from "./Message";
-import TypingIndicator from "./TypingIndicator";
+import TypingIndicator from "./TempTyping";
 
 const AVATAR_COLORS = [
   "avatar-a","avatar-b","avatar-c","avatar-d","avatar-e",
