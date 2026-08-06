@@ -32,11 +32,12 @@ export function useMyPresence(email) {
   useEffect(() => {
     if (!email) return;
 
-    const go = (is_online) => supabase.from("presence").upsert({
-      email,
-      is_online,
-      last_seen: new Date().toISOString()
-    });
+    const go = (is_online) =>
+  supabase.from("presence").upsert({
+    email,
+    is_online,
+    last_seen: new Date().toISOString()
+  });
 
     go(true);
 
