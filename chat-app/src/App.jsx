@@ -1,69 +1,50 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { supabase } from "./supabase";
+import { supabase } from "./lib/supabase";
+import { useMyPresence } from "./hooks/usePresence";
+import { useProfile } from "./hooks/useProfile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Sidebar from "./components/Sidebar";
-import ChatWindow from "./components/ChatWindow";
+import Sidebar from "./components/Sidebar/Sidebar";
+import ChatWindow from "./components/Chat/ChatWindow";
 
 export default function App() {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeContact, setActiveContact] = useState(null);
-  const [currentName, setCurrentName] = useState("");
 
-  
+  // Active chat state
+  const [activeContact, setActiveContact] = useState(null);       // email of person we're chatting with
+  const [activeConvId, setActiveConvId] = useState(null);         // existing conversation_id (null if new)
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setLoading(false);
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => {
-      setSession(s);
-    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
     return () => listener.subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (!session) return;
-    const email = session.user.email;
+  const currentUser = session?.user?.email;
+  const { profile: currentProfile } = useProfile(currentUser);
+  useMyPresence(currentUser);
 
-    // Load this user's name from users table
-    supabase.from("users").select("name").eq("email", email).single()
-      .then(({ data }) => {
-        if (data?.name) setCurrentName(data.name);
-      });
+  // User clicked an existing conversation in sidebar
+  const handleSelectConversation = (conv) => {
+    setActiveContact(conv.other_email);
+    setActiveConvId(conv.conversation_id);
+  };
 
-    // Upsert into users + presence
-    supabase.from("users").upsert({ email }).then(({ error }) => {
-      if (error) console.error("users upsert:", error.message);
-    });
+  // User selected someone from search (no conversation yet)
+  const handleSelectSearchUser = (user) => {
+    setActiveContact(user.email);
+    setActiveConvId(null);
+  };
 
-    supabase.from("presence").upsert({
-      email,
-      is_online: true,
-      last_seen: new Date().toISOString()
-    }).then(({ error }) => {
-      if (error) console.error("presence upsert:", error.message);
-    });
-
-    const handleUnload = () => {
-      supabase.from("presence").upsert({
-        email,
-        is_online: false,
-        last_seen: new Date().toISOString()
-      });
-    };
-    window.addEventListener("beforeunload", handleUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleUnload);
-      supabase.from("presence").upsert({
-        email,
-        is_online: false,
-        last_seen: new Date().toISOString()
-      });
-    };
-  }, [session]);
+  // Conversation was just created on first message
+  const handleConversationCreated = (conv) => {
+    setActiveConvId(conv.conversation_id);
+  };
 
   if (loading) return <div className="loading">Loading…</div>;
 
@@ -80,15 +61,18 @@ export default function App() {
   return (
     <div className="app-layout">
       <Sidebar
-        currentUser={session.user.email}
-        currentName={currentName}
-        activeContact={activeContact}
-        onSelectContact={setActiveContact}
+        currentUser={currentUser}
+        currentProfile={currentProfile}
+        activeConversation={activeConvId ? { conversation_id: activeConvId } : null}
+        onSelectConversation={handleSelectConversation}
+        onSelectSearchUser={handleSelectSearchUser}
       />
       <ChatWindow
-        currentUser={session.user.email}
-        currentName={currentName}
+        currentUser={currentUser}
+        currentProfile={currentProfile}
         contact={activeContact}
+        conversationId={activeConvId}
+        onConversationCreated={handleConversationCreated}
       />
     </div>
   );
